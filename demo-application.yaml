@@ -1,18 +1,18 @@
-apiVersion argoproj.iov1alpha1
-kind Application
-metadata
-  name demo-app
-  namespace argocd
-spec
-  project default
-  source
-    repoURL httpsgithub.comnklvmmrgitops-lab7.git
-    targetRevision main
-    path demo-infra
-  destination
-    server httpskubernetes.default.svc
-    namespace demo
-  syncPolicy
-    automated
-      prune true
-      selfHeal true
+apiVersion: argoproj.io/v1alpha1
+kind: Application
+metadata:
+  name: demo-app
+  namespace: argocd
+spec:
+  project: default
+  source:
+    repoURL: https://github.com/nklvmmr/gitops-lab7.git
+    targetRevision: main
+    path: demo-infra
+  destination:
+    server: https://kubernetes.default.svc
+    namespace: demo
+  syncPolicy:
+    automated:
+      prune: true
+      selfHeal: true
