@@ -1,0 +1,40 @@
+name: gitops-ci
+on:
+  push:
+    branches: [main]
+    paths: [app/**]
+
+permissions:
+  contents: write
+  packages: write
+
+jobs:
+  build-push-bump:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Tests
+        working-directory: app
+        run: python3 -m unittest
+
+      - name: Login GHCR
+        uses: docker/login-action@v3
+        with:
+          registry: ghcr.io
+          username: ${{ github.actor }}
+          password: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: Build and push
+        run: |
+          docker build -t ghcr.io/nklvmmr/telemetry:${{ github.sha }} app
+          docker push ghcr.io/nklvmmr/telemetry:${{ github.sha }}
+
+      - name: Bump tag
+        run: |
+          sed -i "s|image: ghcr.io/.*|image: ghcr.io/nklvmmr/telemetry:${{ github.sha }}|" infra/deployment.yaml
+          git config user.name "github-actions[bot]"
+          git config user.email "github-actions[bot]@users.noreply.github.com"
+          git add infra/deployment.yaml
+          git commit -m "bump image to ${{ github.sha }}"
+          git push
