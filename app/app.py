@@ -3,7 +3,7 @@ import json
 
 
 def get_data():
-    return {"app": "telemetry", "version": "v1", "temperature": 22}
+    return {"app": "telemetry", "version": "v2", "temperature": 22}
 
 
 class Handler(BaseHTTPRequestHandler):
