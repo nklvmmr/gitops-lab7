@@ -23,6 +23,6 @@ spec:
     spec:
       containers:
         - name: telemetry
-          image: ghcr.io/nklvmmr/telemetry:613dd9f1b618295cd88409c9fd85052f6b18c12c
+          image: ghcr.io/nklvmmr/telemetry:02360056a899c8e78fce025cc88f87025c3c7de5
           ports:
             - containerPort: 8116
